@@ -1,0 +1,50 @@
+{
+	"name": "u77wx",
+	"version": "1.0.0",
+	"description": "",
+	"main": "server.js",
+	"scripts": {
+		"start": "node --harmony server.js"
+	},
+	"dependencies": {
+		"express": "latest",
+		"body-parser": "latest",
+		"cheerio": "latest",
+		"cookie-parser": "latest",
+		"crypto": "latest",
+		"ejs": "latest",
+		"domain": "latest",
+		"express": "latest",
+		"iconv-lite": "latest",
+		"jquery": "latest",
+		"leanengine": "latest",
+		"lodash": "latest",
+		"moment": "latest",
+		"path": "latest",
+		"q": "latest",
+		"request-promise": "latest",
+		"babel-core": "latest",
+		"babel-loader": "latest",
+		"babel-polyfill": "latest",
+		"babel-preset-es2015": "latest",
+		"babel-preset-stage-3": "latest"
+	},
+	"babel": {
+		"presets": [
+			"es2015",
+			"stage-3"
+		]
+	},
+	"devDependencies": {
+		"expose-loader": "latest",
+		"gulp": "latest",
+		"gulp-autoprefixer": "latest",
+		"gulp-babel": "latest",
+		"gulp-concat": "latest",
+		"gulp-minify-css": "latest",
+		"gulp-sass": "latest",
+		"webpack": "latest"
+	},
+	"author": "vcing",
+	"license": "ISC"
+}
