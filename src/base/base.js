@@ -1,7 +1,10 @@
 import {Weixin} from './weixin.js';
+import {U77login} from './u77login.js';
 
 export class Base {
 	constructor() {
+		// 加载登陆系统
+		this.u77login = new U77login();
 		this.init().then(result => {
 
 		});
