@@ -1,8 +1,10 @@
 import moment from 'moment';
 import crypto from 'crypto';
+import {BaseClass} from './baseClass.js';
 
-export class Weixin{
+export class Weixin extends BaseClass{
 	constructor() {
+		super();
 		this.ready = false;
 		this.appId = 'wx84229c9e9d6926f8';
 		this.apiList = [
