@@ -9,6 +9,13 @@ let ticketExpiresAt = false;
 let accessToken = false;
 let tokenExpiresAt = false;
 
+router.get('/test',(req,res) => {
+	let redirect = `http://ldev.u77wx.leanapp.cn/weixin/openid`;
+	redirect = encodeURIComponent(redirect);
+	let url = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${config.weixin.ServerAppID}&redirect_uri=${redirect}&response_type=code&scope=snsapi_base&state=server#wechat_redirect`;
+	res.redirect(url);
+})
+
 router.get('/ticket-api',(req,res) => {
 	checkStatus().then(status => {
 		if(status) {
@@ -24,15 +31,6 @@ router.get('/ticket-api',(req,res) => {
 		}
 	});
 });
-
-router.get('/openid',(req,res) => {
-	let code = req.query.code;
-	let url = `https://api.weixin.qq.com/sns/oauth2/access_token?appid=${config.weixin.AppID}&secret=${config.weixin.AppSecret}&code=${code}&grant_type=authorization_code `;
-	request(url).then(result => {
-		console.log(result);
-		res.send(result);
-	});
-})
 
 async function checkStatus() {
 	let accessTokenStatus = false;

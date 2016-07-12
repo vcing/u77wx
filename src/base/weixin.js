@@ -6,7 +6,7 @@ export class Weixin extends BaseClass{
 	constructor() {
 		super();
 		this.ready = false;
-		this.appId = 'wx84229c9e9d6926f8';
+		this.appId = 'wx78bdfeded138667e';
 		this.apiList = [
 			'onMenuShareTimeline',
 			'onMenuShareAppMessage',
