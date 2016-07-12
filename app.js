@@ -14,12 +14,22 @@ import bodyParser from 'body-parser';
 import http from 'http';
 import router from './app/index.js';
 import templateHelper from './app/template.js';
-import AV from './app/av.js';
+import AV from 'leanengine';
 
 let app = express();
 
+// leancloud 初始化
+AV.init({appId:process.env.LEANCLOUD_APP_ID || config.LEANCLOUD_APP_ID,
+		appKey:process.env.LEANCLOUD_APP_KEY || config.LEANCLOUD_APP_KEY,
+		masterKey:process.env.LEANCLOUD_APP_MASTER_KEY || config.LEANCLOUD_APP_MASTER_KEY});
+AV.Cloud.useMasterKey();
+global.AV = AV;
+
 // 使用 LeanEngine 中间件
-app.use(AV.Cloud);
+app.use(AV.express());
+
+// 模型类 全局定义
+global.WechatUser = AV.Object.extend('WechatUser');
 
 // 模板引擎设置
 app.set('views', './dest');
