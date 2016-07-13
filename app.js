@@ -30,6 +30,9 @@ app.use(AV.express());
 
 // 模型类 全局定义
 global.WechatUser = AV.Object.extend('WechatUser');
+global.Lottery = AV.Object.extend('Lottery');
+global.Share = AV.Object.extend('Share');
+global.ShareLog = AV.Object.extend('ShareLog');
 
 // 模板引擎设置
 app.set('views', './dest');
