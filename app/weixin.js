@@ -4,7 +4,7 @@ import moment from "moment";
 import request from 'request-promise';
 import crypto from 'crypto';
 import {parseString} from 'xml2js';
-
+import {Builder} from 'xml2js';
 
 let router = Router();
 let ticket = false;
@@ -13,28 +13,66 @@ let accessToken = false;
 let tokenExpiresAt = false;
 
 router.get('/test',(req,res) => {
-	var xml = `<xml>
-<ToUserName><![CDATA[toUser]]></ToUserName>
-<FromUserName><![CDATA[FromUser]]></FromUserName>
-<CreateTime>123456789</CreateTime>
-<MsgType><![CDATA[event]]></MsgType>
-<Event><![CDATA[subscribe]]></Event>
-</xml>`;
-	parseString(xml, function (err, result) {
-	    console.dir(result);
-	});
+	unSubscribe('ogaTPw1_A0vp9YoHwxwCXiXX1Gow');
 	res.send('ok');
 });
 
-// 接受事件
+// 微信入口
 router.post('/event',(req,res) => {
-	console.log('-----------------body---------------');
-	console.log(req.body);
-	console.log('------------------------------------');
-	console.log(req.params);
-	console.log('----------------params--------------');
-	res.send('');
+	let xmlData = '';
+	req.on('data',data => {
+		xmlData += data;
+	});
+	req.on('end',() => {
+		processData(xmlData).then(result => {
+			res.send(result);
+		})
+	});
 });
+
+router.get('/accessToken',(req,res) => {
+	res.send(accessToken);
+})
+
+async function processData(xmlData) {
+	let data = await new Promise((resolve,reject) => {
+		parseString(xmlData,(err, result) => {
+			if(err) resolve(false);
+			if(result) resolve(result.xml);
+		});
+	});
+	if(!data) return '';
+	if(data.MsgType[0] == 'event')return await processEvent(data);
+	if(data.MsgType[0] == 'text')return await processText(data);
+	return '';
+}
+
+async function processEvent(data) {
+	let result = '';
+	if(data.Event[0] == 'subscribe') await subscribe(data.FromUserName[0]);
+	if(data.Event[0] == 'unsubscribe') await unSubscribe(data.FromUserName[0]);
+	return '';
+}
+
+async function processText(data) {
+	let text = false;
+	if(data.Content[0].indexOf('喵球') != -1) {
+		text = '安卓下载地址（右上角选择浏览器打开）http://file.u77.com/apk/miaoqiu.apk';
+	}else if(data.Content[0].indexOf('萝卜') != -1) {
+		text = '安卓下载地址（右上角选择浏览器打开）http://file.u77.com/apk/done.apk';
+	}else if(data.Content[0].indexOf('回忆') != -1) {
+		text = '安卓下载地址（右上角选择浏览器打开）http://file.u77.com/apk/zhlsddgs2hhb.apk';
+	}else if(data.Content[0].indexOf('贪吃蛇') != -1) {
+		text = '安卓下载地址（右上角选择浏览器打开）http://www.wandoujia.com/apps/air.com.hypah.io.slither';
+	}
+	if(text) return createTextMsg(data.FromUserName[0],text);
+	return '';	
+}
+
+function createTextMsg(openid,text) {
+	let xml = `<xml><ToUserName><![CDATA[${openid}]]></ToUserName><FromUserName><![CDATA[${config.weixin.msgFrom}]]></FromUserName><CreateTime>${moment().unix()}</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA[${text}]]></Content></xml>`;
+	return xml;
+}
 
 // 验证
 router.get('/event',(req,res) => {
@@ -57,6 +95,52 @@ router.get('/event',(req,res) => {
 		res.send('fail');
 		console.log('wechat validate failed.');
 	}
+});
+
+// 创建菜单
+router.get('/createMenu',(req,res) => {
+	let menu =  `{
+    "button": [
+	        {
+	            "name": "玩游戏",
+	            "sub_button": [
+	                {
+	                    "type": "view",
+	                    "name": "艾德尔冒险",
+	                    "url": "http://www.u77.com/gamegate/egret_login/90064"
+	                }
+	            ]
+	        },
+	        {
+	            "name": "精品推荐",
+	            "sub_button": [
+	                {
+	                    "type": "view",
+	                    "name": "游戏杂谈",
+	                    "url": "http://mp.weixin.qq.com/mp/homepage?__biz=MzI4NTE2NTE4NQ==&hid=2&sn=9a3ec53f5ab6df60fc02d6d61201e61a#wechat_redirect"
+	                },
+	                {
+	                    "type": "view",
+	                    "name": "晚报回顾",
+	                    "url": "http://mp.weixin.qq.com/mp/homepage?__biz=MzI4NTE2NTE4NQ==&hid=3&sn=e3d4844c3c80028065a97cac5328457c#wechat_redirect"
+	                }
+	            ]
+	        }
+	    ]
+	}`;
+	checkStatus().then(status => {
+		let url = `https://api.weixin.qq.com/cgi-bin/menu/create?access_token=${accessToken}`;
+		let options = {
+			method: 'POST',
+		    uri: url,
+		    form: menu
+		}
+		request(options).then(result => {
+			console.log(result);
+			res.send(result);
+		})
+
+	});
 })
 
 router.get('/ticket-api',(req,res) => {
@@ -79,7 +163,6 @@ router.get('/openid',(req,res) => {
 	let code = req.query.code;
 	let url = `https://api.weixin.qq.com/sns/oauth2/access_token?appid=${config.weixin.AppID}&secret=${config.weixin.AppSecret}&code=${code}&grant_type=authorization_code `;
 	request(url).then(result => {
-		console.log(result);
 		res.send(result);
 	});
 });
