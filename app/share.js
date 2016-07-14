@@ -15,7 +15,6 @@ router.get("/",(req,res) => {
 	if(!user){
 		res.send({
 			status:101,
-			err:"user required",
 			msg:"分享用户为空"
 		});
 		return;
@@ -24,7 +23,6 @@ router.get("/",(req,res) => {
 	if(!from){
 		res.send({
 			status:102,
-			err:"from required",
 			msg:"分享渠道为空"
 		});
 		return;
@@ -33,7 +31,6 @@ router.get("/",(req,res) => {
 	if(!time){
 		res.send({
 			status:103,
-			err:"time required",
 			msg:"访问时间为空"
 		});
 		return;
@@ -42,7 +39,6 @@ router.get("/",(req,res) => {
 	if(from != "friend" && from !="circle"){
 		res.send({
 			status:104,
-			err:"from error",
 			msg:"访问渠道错误"
 		});
 		return;
@@ -51,7 +47,6 @@ router.get("/",(req,res) => {
 	if(moment().unix() < time || moment().unix()-time > 3600 ){
 		res.send({
 			status:105,
-			err:"time error",
 			msg:"访问时间错误"
 		});
 		return;
@@ -72,7 +67,6 @@ router.get("/join",(req,res) => {
 	if(!shareUser){
 		res.send({
 			status:101,
-			err:"shareUser required",
 			msg:"分享用户为空"
 		});
 		return;
@@ -81,7 +75,6 @@ router.get("/join",(req,res) => {
 	if(!joinUser){
 		res.send({
 			status:102,
-			err:"joinUser required",
 			msg:"访问用户为空"
 		});
 		return;
@@ -90,7 +83,6 @@ router.get("/join",(req,res) => {
 	if(!time){
 		res.send({
 			status:103,
-			err:"time required",
 			msg:"访问时间为空"
 		});
 		return;
@@ -99,7 +91,6 @@ router.get("/join",(req,res) => {
 	if(joinUser == shareUser){
 		res.send({
 			status:104,
-			err:"same user",
 			msg:"访问用户为创建用户"
 		});
 		return;
@@ -108,7 +99,6 @@ router.get("/join",(req,res) => {
 	if(moment().unix() < time || moment().unix()-time > 3600 ){
 		res.send({
 			status:105,
-			err:"time error",
 			msg:"访问时间错误"
 		});
 		return;
@@ -120,10 +110,6 @@ router.get("/join",(req,res) => {
 });
 
 
-router.get("/test",(req,res) => {
-	res.send("ok");
-});
-
 async function share(user,from,time){
 	let query = new AV.Query('Share');
 	query.equalTo('user', user);
@@ -131,7 +117,7 @@ async function share(user,from,time){
 	let chanceFlag = true;
 	if(result){
 		let lastTime = result.get(from);
-		if(moment.unix(time).format("YYYY-MM-DD") == lastTime){
+		if(moment.unix(time).format("YYYY-MM-DD") == moment.unix(lastTime).format("YYYY-MM-DD")){
 			chanceFlag = false;
 		}
 	}else{
@@ -140,7 +126,7 @@ async function share(user,from,time){
 		result.set("user",user);
 	}
 
-	result.set(from,moment.unix(time).format("YYYY-MM-DD"));
+	result.set(from,time);
 	let share = await result.save();
 
 	let chance = "";
@@ -148,7 +134,10 @@ async function share(user,from,time){
 		try{
 			chance = await addChance(user);
 		}catch(e){
-			console.log(e);
+			return {
+				status:106,
+				msg:"增加抽奖次数失败"
+			}
 		}
 	}
 
@@ -162,13 +151,11 @@ async function joinShare(shareUser,joinUser,time){
 	let query = new AV.Query('ShareLog');
 	query.equalTo('shareUser', shareUser);
 	query.equalTo('joinUser', joinUser);
-	query.descending('createdAt')
+	query.descending('createdAt');
 	let log = await query.first();
 	let chanceFlag = true;
 	if(log){
 		let lastTime = log.get("time");
-		console.log(moment.unix(time).format("YYYY-MM-DD"));
-		console.log(moment.unix(lastTime).format("YYYY-MM-DD"));
 		if(moment.unix(time).format("YYYY-MM-DD") == moment.unix(lastTime).format("YYYY-MM-DD")){
 			chanceFlag = false;
 		}
@@ -179,7 +166,10 @@ async function joinShare(shareUser,joinUser,time){
 		try{
 			chance = await addChance(shareUser);
 		}catch(e){
-			console.log(e);
+			return {
+				status:106,
+				msg:"增加抽奖次数失败"
+			}
 		}
 	}
 
@@ -211,7 +201,10 @@ async function addChance(user) {
 		lottery.set("num",num+1);
 		return await lottery.save();
 	}else{
-		return "aaa";
+		return {
+			status:107,
+			msg:"用户不存在"
+		}
 	}
 }
 
