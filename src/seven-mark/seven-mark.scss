@@ -1,0 +1,135 @@
+#u77-seven-mark {
+
+	.mark {
+		height: 3rem;
+		border-image-source: url(http://file.u77.com/weixin/in-01.png);
+		border-image-width: .6rem;
+		border-image-slice: 40%;
+		padding: .2rem;
+		display: flex;
+		flex-direction: column;
+		position: relative;
+
+		.title {
+			position: absolute;
+			left: 0;
+			top: -.08rem;
+			text-align: center;
+		}
+
+		.seven {
+			width: 100%;
+			height: 1rem;
+			flex: 1;
+			position: relative;
+
+			.point {
+				width: .2rem;
+				height: .2rem;
+				line-height: .2rem;
+				text-align: center;
+				border-radius: 50%;
+				border: .01rem solid #c6c6c6;
+				padding: .04rem;
+				color: #c6c6c6;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				flex-direction: column;
+				position: absolute;
+				background: #fff;
+				z-index: 1;
+
+				.circle {
+					width: .15rem;
+				    height: .15rem;
+				    display: block;
+				    background: #c6c6c6;
+				    border-radius: 50%;
+				    flex: 0 0 auto;
+				}
+			}
+
+			.point.active {
+				border-color: #ea8039;
+
+				.circle {
+					background: #ea8039;
+				}
+			}
+
+			.line {
+				height: .01rem;
+				position: absolute;
+				background: #c6c6c6;
+			}
+
+			.point-1 {
+				top: 50%;
+			}
+
+			.point-2 {
+				left: 15%;
+				top: 20%;
+			}
+
+			.point-3 {
+				left: 32%;
+				top: 25%;
+			}
+
+			.point-4 {
+				left: 50%;
+				top: 30%;
+			}
+
+			.point-5 {
+				left: 60%;
+				top: 70%;
+			}
+
+			.point-6 {
+				left: 90%;
+				top: 55%;
+			}
+
+			.point-7 {
+				left: 86%;
+				top: 0;
+			}
+		}
+
+		.present {
+			flex: 0;
+		}
+	}
+}
+
+#u77-seven-dialog {
+	position:fixed;
+	top:0;
+	left:0;
+	width:100%;
+	height:100%;
+	z-index: 2;
+
+	.cover {
+		width: 100%;
+		height: 100%;
+		background:#333;
+		opacity: .3;
+		position: absolute;
+	}
+
+	.wrap {
+		position: relative;
+		width: 80%;
+		margin: 1rem auto;
+		
+		.bg {
+			display: block;
+			margin-left: -0.2rem;
+		}
+	}
+	
+}

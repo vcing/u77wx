@@ -13,13 +13,13 @@ blockquote{margin: 0;padding-left: .10rem;border-left: .3rem solid #dbdbdb;}
 
 #debug-code {
 	font-size: .12rem;
-    line-height: .12rem;
-    padding: .2rem;
-    border: .05rem solid;
-    background: #2d2d2d;
-    color: #bbb;
-    border-radius: .4rem;
-    overflow: hidden;
+	line-height: .12rem;
+	padding: .2rem;
+	border: .05rem solid;
+	background: #2d2d2d;
+	color: #bbb;
+	border-radius: .4rem;
+	overflow: hidden;
 }
 
 body {
@@ -29,141 +29,277 @@ body {
 
 #u77-header {
 	flex: 1;
+	display: flex;
+	background:#f5f6f5;
+	height: .3rem;
+
+	.nav,
+	.user {
+		display: flex;
+		width: 50%;
+		height: 100%;
+		align-items: center;
+
+		.menu {
+			position: absolute;
+			top: .3rem;
+			display: none;
+			padding-top: .07rem;
+
+			.angle {
+				position: absolute;
+				top: -0.1rem;
+				color: #fff;
+				font-size: .3rem;
+			}
+
+			.wrap {
+				padding: .02rem .05rem;
+				background: #fff;
+				border-radius: .03rem;
+			}
+
+			.item {
+				border-bottom: .01rem solid #c5c5c5;
+				padding: .05rem 0;
+				width: 1rem;
+				text-align: center;
+				position: relative;
+
+				.fa {
+					margin-right: .1rem;
+				}
+
+				.sub-menu {
+					position: absolute;
+					left: -1.22rem;
+					top: -.02rem;
+					padding-right: .07rem;
+					display: none;
+
+					.sub-angle {
+						position: absolute;
+						top: 0;
+						right: -.1rem;
+						color: #fff;
+						font-size: .3rem;
+					}
+
+					.sub-wrap {
+						padding: .02rem .05rem;
+						background: #fff;
+						border-radius: .03rem;
+					}
+
+					.sub-item {
+						position: relative;
+						border-bottom: .01rem solid #c5c5c5;
+						padding: .05rem 0;
+						width: 1rem;
+						text-align: center;
+					}
+
+					.sub-item:last-child {
+						border-bottom: none;
+					}
+				}
+			}
+
+			.item:hover {
+				.sub-menu {
+					display: flex;
+				}
+			}
+
+			.item:last-child {
+				border-bottom: none;
+			}
+		}
+	}
+
+	.user {
+		justify-content: flex-start;
+
+		.fa.fa-user,
+		.avatar {
+			width: .24rem;
+			height: .24rem;
+			border-radius: 50%;
+			margin: 0 .05rem 0 .1rem;
+			font-size: .24rem;
+		}
+
+		.nickname {
+
+		}
+
+		.angle {
+			left: .1rem;
+		}
+
+		.menu {
+			left: .03rem;
+		}
+	}
+
+	.nav {
+		justify-content: flex-end;
+
+		.icon {
+			padding: .02rem .1rem;
+			font-size: .16rem;
+		}
+
+		.angle {
+			right: .05rem;
+		}
+
+		.menu {
+			right: .03rem;
+		}
+	}
+
+	.nav:hover,
+	.user:hover {
+		.menu {
+			display: flex;
+		}   
+	}
 }
 
 #u77-login {
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction:column;
-    justify-content: center;
-    align-items: center;
-    top: 0;
+	position: fixed;
+	width: 100%;
+	height: 100%;
+	display: flex;
+	flex-direction:column;
+	justify-content: center;
+	align-items: center;
+	top: 0;
 
-    .cover {
-        width: 100%;
-        height: 100%;
-        background: #ccc;
-        position: fixed;
-        opacity: 0.3;
-        top: 0;
-    }
+	.cover {
+		width: 100%;
+		height: 100%;
+		background: #ccc;
+		position: fixed;
+		opacity: 0.3;
+		top: 0;
+	}
 
-    .login-box {
-        width: 2.4rem;
-        height: 2.4rem;
-        padding: .4rem .5rem;
-        border-radius: .04rem;
-        background: #fff;
-        z-index: 2;
-        display: flex;
-        flex-direction:column;
+	.login-box {
+		width: 2.4rem;
+		height: 2.4rem;
+		padding: .4rem .5rem;
+		border-radius: .04rem;
+		background: #fff;
+		z-index: 2;
+		display: flex;
+		flex-direction:column;
 
-        .title {
-            color: #d80d16;
-            font-size: .3rem;
-            margin: 0;
-            font-weight: normal;
-            text-align: center;
-            flex: 1;
-        }
+		.title {
+			color: #d80d16;
+			font-size: .3rem;
+			margin: 0;
+			font-weight: normal;
+			text-align: center;
+			flex: 1;
+		}
 
-        .tab.active {
-            display: flex;
-            flex-direction: column;
-            flex: 5;
+		.tab.active {
+			display: flex;
+			flex-direction: column;
+			flex: 5;
 
-            .third-login {
-                flex: 5;
-                display: flex;
-                padding: .36rem .1rem;
-                align-items: center;
+			.third-login {
+				flex: 5;
+				display: flex;
+				padding: .36rem .1rem;
+				align-items: center;
 
-                .qq,.weibo {
-                    flex: 1;
-                    display: flex;
-                    flex-direction: column;
-                    
-                    text-decoration: none;
+				.qq,.weibo {
+					flex: 1;
+					display: flex;
+					flex-direction: column;
+					
+					text-decoration: none;
 
-                    .fa {
-                        font-size: .25rem;
-                        padding: .15rem;
-                        border-radius: 50%;
-                        background: #f66060;
-                        color: #fff;
-                    }
+					.fa {
+						font-size: .25rem;
+						padding: .15rem;
+						border-radius: 50%;
+						background: #f66060;
+						color: #fff;
+					}
 
-                    span {
-                        text-align: right;
-                        font-size: .14rem;
-                        margin-top: .1rem;
-                        color: #333;
-                        text-decoration: none;
-                        flex: 1;
-                    }
-                }
+					span {
+						text-align: right;
+						font-size: .14rem;
+						margin-top: .1rem;
+						color: #333;
+						text-decoration: none;
+						flex: 1;
+					}
+				}
 
-                .qq {
-                    align-items: flex-end;
-                    padding-right:.1rem;
+				.qq {
+					align-items: flex-end;
+					padding-right:.1rem;
 
-                    .fa {
-                        background: #4a9cf8;
-                    }
-                }
+					.fa {
+						background: #4a9cf8;
+					}
+				}
 
-                .weibo {
-                    align-items:flex-start;
-                    padding-left: .1rem;
+				.weibo {
+					align-items:flex-start;
+					padding-left: .1rem;
 
-                    .fa {
-                        background: #f66060;
-                    }
-                }
-            }
+					.fa {
+						background: #f66060;
+					}
+				}
+			}
 
-            .switch {
-                flex: 1;
-                text-align: center;
-                color: #05f;
-                text-decoration: underline;
-                font-size: .12rem;
-                text-align: center;
-            }
+			.switch {
+				flex: 1;
+				text-align: center;
+				color: #05f;
+				text-decoration: underline;
+				font-size: .12rem;
+				text-align: center;
+			}
 
-            .login-form {
-                flex: 5;
-                display: flex;
-                flex-direction: column;
-                justify-content: space-around;
-                padding: .2rem .1rem;
+			.login-form {
+				flex: 5;
+				display: flex;
+				flex-direction: column;
+				justify-content: space-around;
+				padding: .2rem .1rem;
 
-                input[name="username"],input[name="password"] {
-                    border: .01rem solid #dddddd;
-                    border-radius: .02rem;
-                    padding: .1rem 2%;
-                    font-size: .13rem;
-                }
+				input[name="username"],input[name="password"] {
+					border: .01rem solid #dddddd;
+					border-radius: .02rem;
+					padding: .1rem 2%;
+					font-size: .13rem;
+				}
 
-                .submit {
-                    font-size: .2rem;
-                    display: block;
-                    border:none;
-                    width:100%;
-                    text-align: center;
-                    background: #d80d16;
-                    color: #fff;
-                    border-radius: .03rem;
-                    padding: .06rem 0;
-                }
-            }
+				.submit {
+					font-size: .2rem;
+					display: block;
+					border:none;
+					width:100%;
+					text-align: center;
+					background: #d80d16;
+					color: #fff;
+					border-radius: .03rem;
+					padding: .06rem 0;
+				}
+			}
 
-        }
+		}
 
-        .tab {
-            display: none;
-        }
-    }
+		.tab {
+			display: none;
+		}
+	}
 }

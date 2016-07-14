@@ -1,5 +1,5 @@
 import {Weixin} from './weixin.js';
-import {U77login} from './u77login.js';
+import {User} from './user.js';
 import {BaseClass} from './baseClass.js';
 
 export class Base extends BaseClass{
@@ -12,8 +12,9 @@ export class Base extends BaseClass{
 
 	async init() {
 		// 加载登陆系统
-		this.u77login = new U77login();
+		this.user = new User();
 
+		// 加载微信
 		this.weixin = new Weixin();
 		let weixinReadyResult = await this.weixin.init();
 		if(weixinReadyResult.err) {

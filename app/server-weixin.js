@@ -9,12 +9,56 @@ let ticketExpiresAt = false;
 let accessToken = false;
 let tokenExpiresAt = false;
 
+let path = 'http://ldev.u77wx.leanapp.cn/';
+
 router.get('/test',(req,res) => {
-	let redirect = `http://ldev.u77wx.leanapp.cn/weixin/openid`;
+	let redirect = `${path}weixin/openid`;
 	redirect = encodeURIComponent(redirect);
 	let url = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${config.weixin.ServerAppID}&redirect_uri=${redirect}&response_type=code&scope=snsapi_base&state=server#wechat_redirect`;
 	res.redirect(url);
-})
+});
+
+router.get('/lead/:name',(req,res) => {
+	if(checkWechatBroswer(req.headers['user-agent'])){
+		let name = req.params.name;
+		let state = 'default';
+		let redirect = `${path}server-weixin/activity/${name}`;
+		redirect = encodeURIComponent(redirect);
+		let url = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${config.weixin.ServerAppID}&redirect_uri=${redirect}&response_type=code&scope=snsapi_base&state=${state}#wechat_redirect`;
+		res.redirect(url);
+	}else {
+		res.render('pc/'+req.params.name+'.html');
+	}
+});
+
+router.get('/lead/:name/:state',(req,res) => {
+	if(checkWechatBroswer(req.headers['user-agent'])){
+		let name = req.params.name;
+		let state = req.params.state;
+		let redirect = `${path}server-weixin/activity/${name}`;
+		redirect = encodeURIComponent(redirect);
+		let url = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${config.weixin.ServerAppID}&redirect_uri=${redirect}&response_type=code&scope=snsapi_base&state=${state}#wechat_redirect`;
+		res.redirect(url);
+	}else {
+		res.render('pc/'+req.params.name+'.html');
+	}
+});
+
+router.get('/activity/:name',(req,res) => {
+	let code = req.query.code;
+	let name = req.params.name;
+	let state = req.query.state || 'default';
+	getUnionId(code).then(unionId => {
+		if(unionId){
+			res.render(name+'/index.html',{
+				unionId,
+				state
+			});	
+		}else {
+			res.redirect(`/server-weixin/lead/${name}/${state}`);
+		}
+	});
+});
 
 router.get('/ticket-api',(req,res) => {
 	checkStatus().then(status => {
@@ -32,36 +76,40 @@ router.get('/ticket-api',(req,res) => {
 	});
 });
 
-// async function fetchUsersUnionID(users) {
-// 	users.map(async user => {
-// 		let openId = user.get('subOpenId');
-// 		let _result = await fetchUnionId(openId);
-// 	});
-// }
+function checkWechatBroswer(agant) {
+	if(agant.indexOf('MicroMessenger') != -1)return true;
+	return false;
+}
 
-// async function fetchAllUser() {
-// 	let query = new global.AV.Query('WechatUser');
-// 	let users = await fetchUsers(query);
-// 	return users;
-// }
+async function getUnionId(code) {
+	let url = `https://api.weixin.qq.com/sns/oauth2/access_token?appid=${config.weixin.ServerAppID}&secret=${config.weixin.ServerAppSecret}&code=${code}&grant_type=authorization_code `;
+	let result = await request(url);
+	try {
+		result = JSON.parse(result);
+	}catch(e) {
+		console.log(e);
+	}
+	if(result.openid){
+		let detail = await fetchDetail(result.openid);
+		return detail.unionid;
+	}else {
+		return false;
+	}
+}
 
-// async function fetchUsers(query,skip=0) {
-// 	let step = 100;
-// 	query.skip(skip);
-// 	query.limit(step);
-// 	let result;
-// 	try {
-// 		let _result = await query.find();
-// 		let others = [];
-// 		if(_result.length == step) {
-// 			others = await fetchUsers(query,skip+step); 
-// 		}
-// 		result = _result.concat(others);
-// 	}catch(e) {
-// 		console.log(e);
-// 	}
-// 	return result;
-// }
+async function fetchDetail(openId) {
+	await checkStatus();
+	let url = `https://api.weixin.qq.com/cgi-bin/user/info?access_token=${accessToken}&openid=${openId}&lang=zh_CN`;
+	let result = {};
+	try{
+		result = await request(url);
+		result = JSON.parse(result);
+	}catch(e) {
+		console.log(e);
+	}
+
+	return result;
+}
 
 async function checkStatus() {
 	let accessTokenStatus = false;

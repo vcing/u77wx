@@ -159,13 +159,17 @@ router.get('/ticket-api',(req,res) => {
 	});
 });
 
-router.get('/openid',(req,res) => {
-	let code = req.query.code;
-	let url = `https://api.weixin.qq.com/sns/oauth2/access_token?appid=${config.weixin.AppID}&secret=${config.weixin.AppSecret}&code=${code}&grant_type=authorization_code `;
-	request(url).then(result => {
-		res.send(result);
-	});
-});
+router.get('/subscribe/:unionId',(req,res) => {
+	let unionId = req.params.unionId;
+	console.log(unionId);
+	fetchDetailByUnionId(unionId).then(user => {
+		if(user) {
+			res.send("true");
+		}else {
+			res.send('false');
+		}
+	})
+})
 
 router.get('/asyncUsersInfo',(req,res) => {
 	try {
@@ -220,6 +224,18 @@ async function fetchDetail(openId) {
 	}
 
 	return result;
+}
+
+async function fetchDetailByUnionId(unionId) {
+	let query = new global.AV.Query('WechatUser');
+	query.equalTo('unionid',unionId);
+	let user = false;
+	try {
+		user = await query.first();
+	}catch (e) {
+		console.log(e);
+	}
+	return user;
 }
 
 async function fetchAllUsers() {
