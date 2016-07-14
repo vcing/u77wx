@@ -1,11 +1,11 @@
 import {BaseClass} from './baseClass.js';
 
-export class U77login extends BaseClass{
+export class User extends BaseClass{
 	constructor() {
 		super();
 		this.loginTemplate = `
 		<div id="u77-login">
-			<div class="cover" onclick="base.u77login.closeLoginBox()"></div>
+			<div class="cover" onclick="base.user.closeLoginBox()"></div>
 			<div class="login-box">
 				<h1 class="title">U77总有好游戏</h1>
 				<div class="tab active" data-id=1>
@@ -19,21 +19,97 @@ export class U77login extends BaseClass{
 							<span>微博登陆</span>
 						</a>
 					</div>
-					<a class="switch" onclick="base.u77login.switcher()">U77账号密码登陆</a>
+					<a class="switch" onclick="base.user.switcher()">U77账号密码登陆</a>
 				</div>
 				<div class="tab " data-id=2>
-					<form class="login-form" method="post" action="http://www.u77.com/api/wx_login" onsubmit="return base.u77login.loginSubmit()">
+					<form class="login-form" method="post" action="http://www.u77.com/api/wx_login" onsubmit="return base.user.loginSubmit()">
 						<input type="text" name="username" placeholder="请输入邮箱地址">
 						<input type="password" name="password" placeholder="请输入密码">
 						<button class="submit" type="submit">登陆</button>
 					</form>
-					<a class="switch" onclick="base.u77login.switcher()">第三方快捷登陆</a>
+					<a class="switch" onclick="base.user.switcher()">第三方快捷登陆</a>
 				</div>
 			</div>
 		</div>
 		`;
-		this.isLogin();
-		this.checkLoginStatus();
+		this.isLogin().then(user => {
+			this.renderHeader();
+		});
+	}
+
+	renderHeader() {
+		let navTemplate = `
+		<div class="nav">
+			<span class="icon"><i class="fa fa-plus-square-o"></i></span>
+			<div class="menu">
+				<i class="angle fa fa-caret-up"></i>
+				<div class="wrap">
+					<div class="item game">
+						<i class="fa fa-gamepad"></i>
+						<span class="text">游戏</span>
+						<div class="sub-menu">
+							<i class="sub-angle fa fa-caret-right"></i>
+							<div class="sub-wrap">
+								<div class="sub-item">
+									<span class="text">萌神赵子龙</span>
+								</div>
+								<div class="sub-item">
+									<span class="text">艾德尔冒险</span>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="item activities">
+						<i class="fa fa-list"></i>
+						<span class="text">活动</span>
+						<div class="sub-menu">
+							<i class="sub-angle fa fa-caret-right"></i>
+							<div class="sub-wrap">
+								<div class="sub-item">
+									<span class="text">萌神签到礼包</span>
+								</div>
+								<div class="sub-item">
+									<span class="text">萌神分享礼包</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		`;
+
+		let userTemplate = `
+		<div class="user">
+			<img class="avatar" src="{{avatar}}">
+			<span class="nickname">{{nickname}}</span>
+			<div class="menu">
+				<i class="angle fa fa-caret-up"></i>
+				<div class="wrap">
+					<div class="item logout">
+						<i class="fa fa-sign-out"></i>
+						<span class="text">登出</span>
+					</div>
+				</div>
+			</div>
+		</div>
+		`;
+
+		let noUserTemplate = `
+		<div class="user" onclick="base.user.openLoginBox()">
+			<i class="fa fa-user"></i>
+			<span class="nickname">U77账号登陆</span>
+		</div>
+		`;
+
+		if(this.user && this.user.userId) {
+			$('#u77-header').html(userTemplate
+				.replace(/{{avatar}}/g,this.user.avatar)
+				.replace(/{{nickname}}/g,this.user.nickname)+navTemplate
+			);
+		}else {
+			$('#u77-header').html(noUserTemplate + navTemplate);
+		}
 	}
 
 	loginSubmit() {
@@ -68,14 +144,6 @@ export class U77login extends BaseClass{
 			}
 		});
 		return false;
-	}
-
-	checkLoginStatus() {
-		let code = this.GetQueryString('loginerrorcode');
-		if(code) {
-			code = parseInt(code);
-			
-		}
 	}
 
 	async isLogin() {
