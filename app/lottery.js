@@ -1,25 +1,24 @@
 import {Router} from 'express';
 import moment from "moment";
 import crypto from 'crypto';
+import request from 'request-promise';
 
 let router = Router();
+let path = "http://127.0.0.1:3000/";
 
 router.get("/",(req,res) => {
 	let params = req.query;
 	let user = params.unionId;
 	if(user){
-		console.log(user);
 		lottery(user).then((result) => {
-			res.send({result:result});
-		},(error) => {
-			res.send(error);
+			res.send(result);
 		});
 	}else{
 		res.send({
-			status:101,
-			err:"user required",
+			status:104,
 			msg:"用户为空"
 		});
+		return;
 	}
 });
 
@@ -27,23 +26,16 @@ router.get("/init",(req,res) => {
 	let params = req.query;
 	let user = params.unionId;
 	if(user){
-		console.log(user);
 		lotteryInit(user).then((result) => {
-			res.send({result:result});
-		},(error) => {
-			res.send(error);
+			res.send(result.get("num"));
 		});
 	}else{
 		res.send({
 			status:101,
-			err:"user required",
 			msg:"用户为空"
 		});
+		return;
 	}
-});
-
-router.get("/test",(req,res) => {
-	res.send("lottery");
 });
 
 async function lotteryInit(user){
@@ -73,18 +65,54 @@ async function lottery(user) {
 			result.set("num",num-1);
 			try{
 				await result.save();
-				let rand = Math.random()*100;
-				console.log(rand);
-				return rand;
+				let giftName = getRand();
+
+				let url = path+"gift?unionId="+user+"&name="+giftName;
+				return await request(url);
 			}catch(e){
-				console.log(e);
+				return {
+					status:105,
+					msg:"礼包获取错误"
+				};
 			}
 		}else{
-			return "bbb";
+			return {
+				status:106,
+				msg:"抽奖次数不足"
+			}
 		}
 	}else{
-		return "aaa";
+		return {
+			status:107,
+			msg:"用户不存在"
+		}
 	}
+}
+
+function getRand(){
+	let rand = Math.random()*100;
+	let name = "";
+	if(rand >= 98 && rand<100){
+		name = "mszzl-lottery-1";
+	}else if(rand >= 94 && rand<98){
+		name = "mszzl-lottery-2";
+	}else if(rand >= 90 && rand<94){
+		name = "mszzl-lottery-3";
+	}else if(rand >= 80 && rand<90){
+		name = "mszzl-lottery-4";
+	}else if(rand >= 70 && rand<80){
+		name = "mszzl-lottery-5";
+	}else if(rand >= 55 && rand<70){
+		name = "mszzl-lottery-6";
+	}else if(rand >= 40 && rand<55){
+		name = "mszzl-lottery-7";
+	}else if(rand >= 25 && rand<40){
+		name = "mszzl-lottery-8";
+	}else{
+		name = "mszzl-lottery-9";
+	}
+
+	return name;
 }
 
 export default router;
