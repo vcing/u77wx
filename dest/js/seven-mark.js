@@ -69,7 +69,7 @@ webpackJsonp([0],{
 	
 			var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Seven).call(this));
 	
-			_this.initLine();
+			setTimeout("base.seven.initLine()", 2000);
 			_this.unionId = $('#u77-unionid').val();
 			_this.initState();
 			return _this;
