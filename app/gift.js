@@ -74,9 +74,9 @@ router.get("/daily-count",(req,res) => {
 router.get("/daily",(req,res) => {
 	let params = req.query;
 	let user = params.unionId;
-	
+	let count = params.count;
 	if(user){
-		getDailyGift(user).then((result) => {
+		getDailyGift(user,count).then((result) => {
 			res.send(result);
 		});
 	}else{
@@ -138,39 +138,48 @@ async function getMyGift(user,sign,count){
 	};
 }
 
-async function getDailyGift(user){
+async function getDailyGift(user,count){
 	let query = new AV.Query('Gift');
 	let sign = "daily";
 	let getCode = true;
-	let count = 1;
-	let time = moment().unix();
+	let maxCount = 0;
+	let time = moment().unix().toString();
 	let code = "";
 	query.equalTo('user', user);
 	query.equalTo('sign', sign);
 	query.descending('createdAt');
-	let result = await query.first();
-	if(result){
-		let lastTime = result.get("time");
+	let result = await query.find();
+	if(result && result.length > 0){
+		maxCount = result[0].get("count");
+		let lastTime = result[0].get("time");
 		if(moment.unix(lastTime).format("YYYY-MM-DD") == moment.unix(time).format("YYYY-MM-DD")){
 			getCode = false;
-			code = result.get("code");
-			count = result.get("count");
-		}else{
-			count = result.get("count") + 1;
 		}
 	}
 
-	if(getCode){
-		let gift = await getGift(user,"mszzl-daily-"+count);
-		if(gift && gift.status == 100){
-			code = gift.code;
+	if(count <= maxCount){
+		for(let gift of result){
+			if(count == gift.get("count")){
+				code = gift.get("code");
+			}
+		}
+	}else{
+		if(getCode && (count == maxCount + 1) ){
+			let gift = await getGift(user,"mszzl-daily-"+count);
+			if(gift && gift.status == 100){
+				code = gift.code;
+			}else{
+				return gift;
+			}
 		}else{
-			return gift;
+			return {
+				status:104,
+				msg:"今天已领取礼包"
+			}
 		}
 	}
 
 	return {
-		day:count,
 		code:code,
 		status:100,
 		msg:"ok"
@@ -188,10 +197,13 @@ async function getGift(user,name){
 		}
 	}
 	if(curGift){
-		let secure = crypto.createHash('md5').update(user+"u77giftheheda", 'utf-8').digest('hex');
-		let codeUrl = "http://u77pay.leanapp.cn//api/gift/fetch?userId="+user+"&secure="+secure+"&gift="+curGift.objectId;
+		let giftUser = user;
+		if(name.split("-")[1] == "lottery"){
+			giftUser = user + "-" + moment().unix();
+		}
+		let secure = crypto.createHash('md5').update(giftUser+"u77giftheheda", 'utf-8').digest('hex');
+		let codeUrl = "http://u77pay.leanapp.cn/api/gift/fetch?userId="+giftUser+"&secure="+secure+"&gift="+curGift.objectId;
 		let result = JSON.parse(await request(codeUrl));
-
 		if(result && result.status == 100){
 			let code = result.code;
 			saveGift(user,name,code);
@@ -215,12 +227,14 @@ async function saveGift(user,name,code){
 		let option = name.split("-");
 		let count = parseInt(option[2]);
 		let sign = option[1];
+		let game = option[0];
 		let gift = new global.Gift();
 		gift.set("user",user);
 		gift.set("count",count);
 		gift.set("sign",sign);
 		gift.set("code",code);
-		gift.set("time",moment().unix());
+		gift.set("game",game);
+		gift.set("time",moment().unix().toString());
 		
 		gift.save();
 	}

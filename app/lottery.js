@@ -27,7 +27,7 @@ router.get("/init",(req,res) => {
 	let user = params.unionId;
 	if(user){
 		lotteryInit(user).then((result) => {
-			res.send(result.get("num"));
+			res.send(result.get("num").toString());
 		});
 	}else{
 		res.send({
@@ -66,9 +66,15 @@ async function lottery(user) {
 			try{
 				await result.save();
 				let giftName = getRand();
+				let count = giftName.split("-")[2];
 
 				let url = path+"gift?unionId="+user+"&name="+giftName;
-				return await request(url);
+				let gift = JSON.parse(await request(url));
+
+				if(gift && gift.status == 100){
+					gift["count"] = count;
+				}
+				return gift;
 			}catch(e){
 				return {
 					status:105,
