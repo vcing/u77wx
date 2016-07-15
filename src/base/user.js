@@ -67,7 +67,7 @@ export class User extends BaseClass{
 									<a href="http://www.u77.com/gamegate/egret_login/90492" class="text">萌神赵子龙</a>
 								</div>
 								<div class="sub-item">
-									<a href="www.u77.com/gamegate/egret_login/90064" class="text">艾德尔冒险</a>
+									<a href="http://www.u77.com/gamegate/egret_login/90064" class="text">艾德尔冒险</a>
 								</div>
 							</div>
 						</div>
