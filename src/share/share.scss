@@ -34,6 +34,16 @@
 					position: absolute;
 					left: 10%;
 					top: -100%;
+
+					.start-game {
+						padding: .05rem 0.2rem;
+					    display: inline-block;
+					    margin-bottom: .1rem;
+					    background: #e35a11;
+					    color: #fff;
+					    border-radius: .03rem;
+					    text-decoration: none;
+					}
 				}
 			}
 		}

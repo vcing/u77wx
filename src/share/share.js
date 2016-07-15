@@ -1,7 +1,7 @@
 import {BaseClass} from '../base/baseClass.js';
 import moment from 'moment';
 
-let path = "http://192.168.1.105:3000/";
+let path = window.path;
 
 export class Share extends BaseClass {
 	constructor() {
@@ -14,13 +14,13 @@ export class Share extends BaseClass {
 	}
 
 	async draw() {
-		if(this.count <= 0){
-			alert('抽奖次数已经用完了,赶快分享获取更多抽奖机会吧.');
-			return;
-		}
 		if(this.paperOpen) {
 			this.machineReset();
 			this.paperOpen = false;
+			return;
+		}
+		if(this.count <= 0){
+			alert('抽奖次数已经用完了,赶快分享获取更多抽奖机会吧.');
 			return;
 		}
 		this.count--;
@@ -119,7 +119,6 @@ export class Share extends BaseClass {
 			height /= 2;
 			let left = dom.css('left');
 			left = parseInt(left);
-			console.log(left);
 			let angle = Math.random() * 50; 
 			let leftOffset = (0.5-Math.random())*100
 

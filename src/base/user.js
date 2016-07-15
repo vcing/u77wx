@@ -1,6 +1,6 @@
 import {BaseClass} from './baseClass.js';
 
-let path = "http://192.168.1.105:3000/";
+let path = window.path;
 
 export class User extends BaseClass{
 
@@ -42,9 +42,17 @@ export class User extends BaseClass{
 		this.unionId = $('#u77-unionid').val();
 	}
 
+	showMenu() {
+		$('#u77-header .nav .menu').show();
+	}
+
+	hideMenu() {
+		$('#u77-header .nav .menu').hide();
+	}
+
 	renderHeader() {
 		let navTemplate = `
-		<div class="nav">
+		<div class="nav" onclick="base.user.showMenu()">
 			<span class="icon"><i class="fa fa-plus-square-o"></i></span>
 			<div class="menu">
 				<i class="angle fa fa-caret-up"></i>
@@ -56,10 +64,10 @@ export class User extends BaseClass{
 							<i class="sub-angle fa fa-caret-right"></i>
 							<div class="sub-wrap">
 								<div class="sub-item">
-									<span class="text">萌神赵子龙</span>
+									<a href="http://www.u77.com/gamegate/egret_login/90492" class="text">萌神赵子龙</a>
 								</div>
 								<div class="sub-item">
-									<span class="text">艾德尔冒险</span>
+									<a href="www.u77.com/gamegate/egret_login/90064" class="text">艾德尔冒险</a>
 								</div>
 							</div>
 						</div>

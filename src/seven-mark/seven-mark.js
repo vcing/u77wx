@@ -1,7 +1,6 @@
 import {BaseClass} from '../base/baseClass.js';
 
-let path = "http://192.168.1.105:3000/gift/";
-// let path = "http://ldev.u77wx.leanapp.cn/gift/";
+let path = `${window.path}gift/`;
 
 export class Seven extends BaseClass {
 	constructor() {
@@ -112,7 +111,7 @@ export class Seven extends BaseClass {
 			<div class="wrap">
 				<img class="bg" src="http://file.u77.com/weixin/tk.png" width="100%">
 				<div class="code"><span>激活码获取中...</span></div>
-				<a class="copy"><img src="http://file.u77.com/weixin/fuzhi.png"></a>
+				<a class="copy">长按激活码->选择复制->复制</a>
 				<a class="start-game" href="http://www.u77.com/gamegate/egret_login/90492"><img src="http://file.u77.com/weixin/jryx.png"></a>
 			</div>
 		</div>

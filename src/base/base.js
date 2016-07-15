@@ -5,6 +5,7 @@ import {BaseClass} from './baseClass.js';
 export class Base extends BaseClass{
 	constructor() {
 		super();
+		
 		this.init().then(result => {
 
 		});

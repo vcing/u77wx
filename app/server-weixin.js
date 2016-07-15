@@ -9,7 +9,7 @@ let ticketExpiresAt = false;
 let accessToken = false;
 let tokenExpiresAt = false;
 
-let path = 'http://ldev.u77wx.leanapp.cn/';
+let path = config.local;
 
 router.get('/test',(req,res) => {
 	let redirect = `${path}weixin/openid`;
@@ -45,19 +45,23 @@ router.get('/lead/:name/:state',(req,res) => {
 });
 
 router.get('/activity/:name',(req,res) => {
-	let code = req.query.code;
-	let name = req.params.name;
-	let state = req.query.state || 'default';
-	getUnionId(code).then(unionId => {
-		if(unionId){
-			res.render(name+'/index.html',{
-				unionId,
-				state
-			});	
-		}else {
-			res.redirect(`/server-weixin/lead/${name}/${state}`);
-		}
-	});
+	if(checkWechatBroswer(req.headers['user-agent'])){
+		let code = req.query.code;
+		let name = req.params.name;
+		let state = req.query.state || 'default';
+		getUnionId(code).then(unionId => {
+			if(unionId){
+				res.render(name+'/index.html',{
+					unionId,
+					state
+				});	
+			}else {
+				res.redirect(`/server-weixin/lead/${name}/${state}`);
+			}
+		});
+	}else {
+		res.render('pc/'+req.params.name+'.html');
+	}
 });
 
 router.get('/ticket-api',(req,res) => {
