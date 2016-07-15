@@ -101,6 +101,21 @@ router.get('/event',(req,res) => {
 router.get('/createMenu',(req,res) => {
 	let menu =  `{
     "button": [
+    		{
+    			"name":"最新活动",
+    			"sub_button": [
+    				{
+    					"type":"view",
+    					"name":"签到得奖",
+    					"url":"http://u77wx.leanapp.cn/server-weixin/lead/seven-mark"
+    				},
+    				{
+    					"type":"view",
+    					"name":"分享有礼",
+    					"url":"http://u77wx.leanapp.cn/server-weixin/lead/share"
+    				}
+    			]
+    		},
 	        {
 	            "name": "玩游戏",
 	            "sub_button": [
@@ -108,6 +123,11 @@ router.get('/createMenu',(req,res) => {
 	                    "type": "view",
 	                    "name": "艾德尔冒险",
 	                    "url": "http://www.u77.com/gamegate/egret_login/90064"
+	                },
+	                {
+	                	"type": "view",
+	                	"name": "萌神赵子龙",
+	                	"url": "http://www.u77.com/gamegate/egret_login/90492"
 	                }
 	            ]
 	        },

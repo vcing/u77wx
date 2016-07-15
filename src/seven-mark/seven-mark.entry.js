@@ -3,4 +3,4 @@ import {Seven} from './seven-mark.js';
 
 $(async function(){
 	window.base.seven = new Seven();
-})
+});

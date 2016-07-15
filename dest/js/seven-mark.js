@@ -276,6 +276,7 @@ webpackJsonp([0],{
 											$('#u77-seven-mark .mark .seven .point-' + day).addClass('active');
 											$('#u77-seven-mark .mark .present').attr('src', 'http://file.u77.com/weixin/libao-0' + day + '.png');
 										}
+										this.count++;
 										$('#u77-seven-dialog .code span').text(result.code);
 									} else if (result.status == 104) {
 										this.closeMark();
