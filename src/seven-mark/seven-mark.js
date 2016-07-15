@@ -5,7 +5,7 @@ let path = `${window.path}gift/`;
 export class Seven extends BaseClass {
 	constructor() {
 		super();
-		this.initLine();
+		setTimeout("base.seven.initLine()",2000);
 		this.unionId = $('#u77-unionid').val();
 		this.initState();
 	}
