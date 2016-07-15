@@ -53,7 +53,7 @@ router.get("/",(req,res) => {
 	}
 
 	share(user,from,time).then((result) => {
-		res.send({result})
+		res.send(result);
 	})
 
 });
@@ -96,7 +96,7 @@ router.get("/join",(req,res) => {
 		return;
 	}
 
-	if(moment().unix() < time || moment().unix()-time > 3600 ){
+	if(moment().unix() < parseInt(time) || moment().unix()-parseInt(time) > 3600 ){
 		res.send({
 			status:105,
 			msg:"访问时间错误"
@@ -105,7 +105,7 @@ router.get("/join",(req,res) => {
 	}
 
 	joinShare(shareUser,joinUser,time).then((result) => {
-		res.send({result})
+		res.send(result);
 	})
 });
 
@@ -128,23 +128,28 @@ async function share(user,from,time){
 
 	result.set(from,time);
 	let share = await result.save();
-
 	let chance = "";
 	if(chanceFlag){
 		try{
 			chance = await addChance(user);
+			return {
+				status:100,
+				msg:"ok"
+			};
 		}catch(e){
 			return {
 				status:106,
 				msg:"增加抽奖次数失败"
 			}
 		}
+	}else{
+		return {
+			status:110,
+			msg:"ok"
+		};
 	}
 
-	return {
-		chance:chance,
-		share:share
-	};
+	
 }
 
 async function joinShare(shareUser,joinUser,time){
@@ -154,31 +159,27 @@ async function joinShare(shareUser,joinUser,time){
 	query.descending('createdAt');
 	let log = await query.first();
 	let chanceFlag = true;
-	if(log){
-		let lastTime = log.get("time");
-		if(moment.unix(time).format("YYYY-MM-DD") == moment.unix(lastTime).format("YYYY-MM-DD")){
-			chanceFlag = false;
-		}
-	}
-
 	let chance = "";
-	if(chanceFlag){
+	let shareLog = await addLog(shareUser,joinUser,time);
+	if(!log){
 		try{
 			chance = await addChance(shareUser);
+			return {
+				status:100,
+				msg:"ok"
+			};
 		}catch(e){
 			return {
 				status:106,
 				msg:"增加抽奖次数失败"
 			}
 		}
+	}else{
+		return {
+			status:110,
+			msg:"ok"
+		};
 	}
-
-	let shareLog = await addLog(shareUser,joinUser,time);
-
-	return {
-		chance:chance,
-		shareLog:shareLog
-	};
 }
 
 async function addLog(shareUser,joinUser,time){
