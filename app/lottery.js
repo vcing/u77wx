@@ -96,23 +96,23 @@ async function lottery(user) {
 }
 
 function getRand(){
-	let rand = Math.random()*100;
+	let rand = Math.random()*1000;
 	let name = "";
-	if(rand >= 98 && rand<100){
+	if(rand >= 999 && rand<1000){
 		name = "mszzl-lottery-1";
-	}else if(rand >= 94 && rand<98){
+	}else if(rand >= 959 && rand<999){
 		name = "mszzl-lottery-2";
-	}else if(rand >= 90 && rand<94){
+	}else if(rand >= 919 && rand<959){
 		name = "mszzl-lottery-3";
-	}else if(rand >= 80 && rand<90){
+	}else if(rand >= 819 && rand<919){
 		name = "mszzl-lottery-4";
-	}else if(rand >= 70 && rand<80){
+	}else if(rand >= 719 && rand<819){
 		name = "mszzl-lottery-5";
-	}else if(rand >= 55 && rand<70){
+	}else if(rand >= 569 && rand<719){
 		name = "mszzl-lottery-6";
-	}else if(rand >= 40 && rand<55){
+	}else if(rand >= 419 && rand<569){
 		name = "mszzl-lottery-7";
-	}else if(rand >= 25 && rand<40){
+	}else if(rand >= 269 && rand<419){
 		name = "mszzl-lottery-8";
 	}else{
 		name = "mszzl-lottery-9";
