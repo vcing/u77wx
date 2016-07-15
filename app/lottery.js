@@ -52,7 +52,7 @@ async function lotteryInit(user){
 		let newLottery = new Lottery();
 		newLottery.set("user",user);
 
-		return newLottery.save();
+		return await newLottery.save();
 	}
 }
 
