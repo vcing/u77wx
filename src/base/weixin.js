@@ -21,6 +21,9 @@ export class Weixin extends BaseClass{
 			this.ready = false;
 			return {notWeixin:true,msg:'非微信浏览器'};
 		}
+		if(this.ready){
+			return true;
+		}
 		if(window.wx){
 			let options = {
 			    debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
@@ -102,4 +105,6 @@ export class Weixin extends BaseClass{
 		let url = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${this.appId}&redirect_uri=${encodeURIComponent(window.location.href)}&response_type=code&scope=snsapi_base&state=u77wx#wechat_redirect`;
 		window.location.href = url;
 	}
+
+	
 }

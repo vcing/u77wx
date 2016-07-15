@@ -8,6 +8,7 @@ export class Base extends BaseClass{
 		this.init().then(result => {
 
 		});
+		$('#u77-loading').remove();
 	}
 
 	async init() {

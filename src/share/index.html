@@ -1,0 +1,29 @@
+<%- include('../base/header.html') %>
+<div id="u77-share">
+	<div class="head-img">
+		<img src="http://file.u77.com/weixin/bj-s.jpg" width="100%">
+	</div>
+	<div class="lottery">
+		<div class="machine">
+			<img src="http://file.u77.com/weixin/lhj.png" width="105%">
+			<span class="times"><i class="fa fa-spinner fa-pulse fa-fw"></i></span>
+			<div class="entry">
+				<div class="paper">
+					<p>你以为这是老虎机吗？图样<br>恭喜你获得<span class="prize">诸葛亮阿萨德</span><br>兑换码:<span class="code"></span></p>
+					<a class="start-game">进入游戏</a>
+				</div>	
+			</div>
+		</div>
+		<div class="rocker" onclick="base.share.draw()">
+			<div class="text">抽奖</div>
+			<div class="ball"></div>
+			<div class="h-pole"></div>
+			<div class="v-pole"></div>
+		</div>
+	</div>
+	<div class="bottom-img">
+		<img src="http://file.u77.com/weixin/bj-x.jpg" width="100%">
+	</div>
+</div>
+
+<%- include('../base/footer.html',{jsName:'share'}) %>

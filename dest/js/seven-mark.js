@@ -60,6 +60,7 @@ webpackJsonp([0],{
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
 	var path = "http://192.168.1.105:3000/gift/";
+	// let path = "http://ldev.u77wx.leanapp.cn/gift/";
 	
 	var Seven = exports.Seven = function (_BaseClass) {
 		_inherits(Seven, _BaseClass);
@@ -70,7 +71,7 @@ webpackJsonp([0],{
 			var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Seven).call(this));
 	
 			_this.initLine();
-			_this.unionId = $('#u77-seven-mark').data('unionid');
+			_this.unionId = $('#u77-unionid').val();
 			_this.initState();
 			return _this;
 		}
@@ -79,7 +80,7 @@ webpackJsonp([0],{
 			key: 'initState',
 			value: function () {
 				var _ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee() {
-					var result, count, i;
+					var result, i;
 					return regeneratorRuntime.wrap(function _callee$(_context) {
 						while (1) {
 							switch (_context.prev = _context.next) {
@@ -114,13 +115,12 @@ webpackJsonp([0],{
 									return _context.abrupt('return', false);
 	
 								case 16:
-									count = result.count;
-	
-									for (i = 1; i <= count; i++) {
+									this.count = result.count;
+									for (i = 1; i <= this.count; i++) {
 										$('#u77-seven-mark .mark .seven .point-' + i).addClass('active');
 									}
 	
-									$('#u77-seven-mark .mark .present').attr('src', 'http://file.u77.com/weixin/libao-0' + count + '.png');
+									$('#u77-seven-mark .mark .present').attr('src', 'http://file.u77.com/weixin/libao-0' + this.count + '.png');
 	
 								case 19:
 								case 'end':
@@ -248,23 +248,63 @@ webpackJsonp([0],{
 			key: 'showMark',
 			value: function () {
 				var _ref3 = _asyncToGenerator(regeneratorRuntime.mark(function _callee3(day) {
+					var markTemplate, result;
 					return regeneratorRuntime.wrap(function _callee3$(_context3) {
 						while (1) {
 							switch (_context3.prev = _context3.next) {
 								case 0:
+									markTemplate = '\n\t\t<div id="u77-seven-dialog">\n\t\t\t<div class="cover" onclick="base.seven.closeMark()"></div>\n\t\t\t<div class="wrap">\n\t\t\t\t<img class="bg" src="http://file.u77.com/weixin/tk.png" width="100%">\n\t\t\t\t<div class="code"><span>激活码获取中...</span></div>\n\t\t\t\t<a class="copy"><img src="http://file.u77.com/weixin/fuzhi.png"></a>\n\t\t\t\t<a class="start-game" href="http://www.u77.com/gamegate/egret_login/90492"><img src="http://file.u77.com/weixin/jryx.png"></a>\n\t\t\t</div>\n\t\t</div>\n\t\t';
+	
+									if (!(day > this.count + 1)) {
+										_context3.next = 4;
+										break;
+									}
+	
+									alert('前一天的还没签呢~~~');
+									return _context3.abrupt('return');
+	
+								case 4:
+	
+									$('body').append(markTemplate);
+									_context3.next = 7;
+									return $.get(path + 'daily', { unionId: this.unionId, count: day });
+	
+								case 7:
+									result = _context3.sent;
+	
+									if (result.status == 100) {
+										if (!$('#u77-seven-mark .mark .seven .point-' + day).hasClass('active')) {
+											$('#u77-seven-mark .mark .seven .point-' + day).addClass('active');
+											$('#u77-seven-mark .mark .present').attr('src', 'http://file.u77.com/weixin/libao-0' + day + '.png');
+										}
+										$('#u77-seven-dialog .code span').text(result.code);
+									} else if (result.status == 104) {
+										this.closeMark();
+										alert('今日已经领过了哟,明天再来吧.');
+									} else {
+										this.closeMark();
+										alert('领取礼包失败,请刷新重试');
+									}
+	
+								case 9:
 								case 'end':
 									return _context3.stop();
 							}
 						}
 					}, _callee3, this);
 				}));
-
+	
 				function showMark(_x) {
 					return _ref3.apply(this, arguments);
 				}
-
+	
 				return showMark;
 			}()
+		}, {
+			key: 'closeMark',
+			value: function closeMark() {
+				$('#u77-seven-dialog').remove();
+			}
 		}]);
 
 		return Seven;

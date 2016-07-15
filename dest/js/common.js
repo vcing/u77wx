@@ -30,7 +30,7 @@
 /******/ 	// "0" means "already loaded"
 /******/ 	// Array means "loading", array contains callbacks
 /******/ 	var installedChunks = {
-/******/ 		2:0
+/******/ 		3:0
 /******/ 	};
 /******/
 /******/ 	// The require function
@@ -76,7 +76,7 @@
 /******/ 			script.charset = 'utf-8';
 /******/ 			script.async = true;
 /******/
-/******/ 			script.src = __webpack_require__.p + "" + {"0":"ad3272bac8a6120190e4","1":"a8370ceefc9fa05d6a15"}[chunkId] + ".js";
+/******/ 			script.src = __webpack_require__.p + "" + {"0":"05109eb221615273283f","1":"e3bea74f6a5285e9b0b8","2":"53ab81ed24a4ceb39cd7"}[chunkId] + ".js";
 /******/ 			head.appendChild(script);
 /******/ 		}
 /******/ 	};
@@ -8206,6 +8206,7 @@
 			var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Base).call(this));
 	
 			_this.init().then(function (result) {});
+			$('#u77-loading').remove();
 			return _this;
 		}
 	
@@ -8384,8 +8385,16 @@
 									return _context2.abrupt('return', { notWeixin: true, msg: '非微信浏览器' });
 	
 								case 3:
+									if (!this.ready) {
+										_context2.next = 5;
+										break;
+									}
+	
+									return _context2.abrupt('return', true);
+	
+								case 5:
 									if (!window.wx) {
-										_context2.next = 10;
+										_context2.next = 12;
 										break;
 									}
 	
@@ -8461,27 +8470,27 @@
 												}
 											}
 										}, _callee, _this2, [[2, 8]]);
-									})(), 't0', 5);
+									})(), 't0', 7);
 	
-								case 5:
+								case 7:
 									_ret = _context2.t0;
 	
 									if (!((typeof _ret === 'undefined' ? 'undefined' : _typeof(_ret)) === "object")) {
-										_context2.next = 8;
+										_context2.next = 10;
 										break;
 									}
 	
 									return _context2.abrupt('return', _ret.v);
 	
-								case 8:
-									_context2.next = 12;
+								case 10:
+									_context2.next = 14;
 									break;
 	
-								case 10:
+								case 12:
 									this.ready = false;
 									return _context2.abrupt('return', { err: 'weixin sdk not load.', msg: '微信SDK未能加载,请刷新重试.' });
 	
-								case 12:
+								case 14:
 								case 'end':
 									return _context2.stop();
 							}
@@ -26424,6 +26433,8 @@
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
+	var path = "http://192.168.1.105:3000/";
+	
 	var User = exports.User = function (_BaseClass) {
 		_inherits(User, _BaseClass);
 	
@@ -26436,13 +26447,15 @@
 			_this.isLogin().then(function (user) {
 				_this.renderHeader();
 			});
+	
+			_this.unionId = $('#u77-unionid').val();
 			return _this;
 		}
 	
 		_createClass(User, [{
 			key: 'renderHeader',
 			value: function renderHeader() {
-				var navTemplate = '\n\t\t<div class="nav">\n\t\t\t<span class="icon"><i class="fa fa-plus-square-o"></i></span>\n\t\t\t<div class="menu">\n\t\t\t\t<i class="angle fa fa-caret-up"></i>\n\t\t\t\t<div class="wrap">\n\t\t\t\t\t<div class="item game">\n\t\t\t\t\t\t<i class="fa fa-gamepad"></i>\n\t\t\t\t\t\t<span class="text">游戏</span>\n\t\t\t\t\t\t<div class="sub-menu">\n\t\t\t\t\t\t\t<i class="sub-angle fa fa-caret-right"></i>\n\t\t\t\t\t\t\t<div class="sub-wrap">\n\t\t\t\t\t\t\t\t<div class="sub-item">\n\t\t\t\t\t\t\t\t\t<span class="text">萌神赵子龙</span>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t<div class="sub-item">\n\t\t\t\t\t\t\t\t\t<span class="text">艾德尔冒险</span>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class="item activities">\n\t\t\t\t\t\t<i class="fa fa-list"></i>\n\t\t\t\t\t\t<span class="text">活动</span>\n\t\t\t\t\t\t<div class="sub-menu">\n\t\t\t\t\t\t\t<i class="sub-angle fa fa-caret-right"></i>\n\t\t\t\t\t\t\t<div class="sub-wrap">\n\t\t\t\t\t\t\t\t<div class="sub-item">\n\t\t\t\t\t\t\t\t\t<span class="text">萌神签到礼包</span>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t<div class="sub-item">\n\t\t\t\t\t\t\t\t\t<span class="text">萌神分享礼包</span>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</div>\n\t\t';
+				var navTemplate = '\n\t\t<div class="nav">\n\t\t\t<span class="icon"><i class="fa fa-plus-square-o"></i></span>\n\t\t\t<div class="menu">\n\t\t\t\t<i class="angle fa fa-caret-up"></i>\n\t\t\t\t<div class="wrap">\n\t\t\t\t\t<div class="item game">\n\t\t\t\t\t\t<i class="fa fa-gamepad"></i>\n\t\t\t\t\t\t<span class="text">游戏</span>\n\t\t\t\t\t\t<div class="sub-menu">\n\t\t\t\t\t\t\t<i class="sub-angle fa fa-caret-right"></i>\n\t\t\t\t\t\t\t<div class="sub-wrap">\n\t\t\t\t\t\t\t\t<div class="sub-item">\n\t\t\t\t\t\t\t\t\t<span class="text">萌神赵子龙</span>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t<div class="sub-item">\n\t\t\t\t\t\t\t\t\t<span class="text">艾德尔冒险</span>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class="item activities">\n\t\t\t\t\t\t<i class="fa fa-list"></i>\n\t\t\t\t\t\t<span class="text">活动</span>\n\t\t\t\t\t\t<div class="sub-menu">\n\t\t\t\t\t\t\t<i class="sub-angle fa fa-caret-right"></i>\n\t\t\t\t\t\t\t<div class="sub-wrap">\n\t\t\t\t\t\t\t\t<div class="sub-item">\n\t\t\t\t\t\t\t\t\t<a href="' + path + 'server-weixin/lead/seven-mark" class="text">萌神签到礼包</a>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t<div class="sub-item">\n\t\t\t\t\t\t\t\t\t<a href="' + path + 'server-weixin/lead/share" class="text">萌神分享礼包</a>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class="item code-box" onclick="base.user.openCodeBox()">\n\t\t\t\t\t\t<i class="fa fa-gift"></i>\n\t\t\t\t\t\t<span class="text">礼包盒</span>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</div>\n\t\t';
 	
 				var userTemplate = '\n\t\t<div class="user">\n\t\t\t<img class="avatar" src="{{avatar}}">\n\t\t\t<span class="nickname">{{nickname}}</span>\n\t\t\t<div class="menu">\n\t\t\t\t<i class="angle fa fa-caret-up"></i>\n\t\t\t\t<div class="wrap">\n\t\t\t\t\t<div class="item logout">\n\t\t\t\t\t\t<i class="fa fa-sign-out"></i>\n\t\t\t\t\t\t<span class="text">登出</span>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</div>\n\t\t';
 	
@@ -26572,6 +26585,31 @@
 						$('#u77-login .tab[data-id=1]').addClass('active');
 						break;
 				}
+			}
+		}, {
+			key: 'openCodeBox',
+			value: function openCodeBox() {
+				var codeBoxTemplate = '\n\t\t<div id="u77-code-box">\n\t\t\t<div class="cover" onclick="base.user.closeCodeBox()"></div>\n\t\t\t<div class="box">\n\t\t\t\t<h2 class="title">获得的激活码</h2>\n\t\t\t\t<div class="table">\n\t\t\t\t\t<div class="desc">\n\t\t\t\t\t\t<span class="name">礼包名称</span>\n\t\t\t\t\t\t<span class="code">激活码</span>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class="list">\n\t\t\t\t\t\t<div class="loading"><i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i></div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</div>\n\t\t';
+	
+				var itemTemplate = '\n\t\t<div class="item">\n\t\t\t<span class="name">{{name}}</span>\n\t\t\t<span class="code">{{code}}</span>\n\t\t</div>\n\t\t';
+	
+				$('body').append(codeBoxTemplate);
+				$.get(path + 'gift/find', { unionId: this.unionId }, function (result) {
+					if (result.status == 100) {
+						var template = '';
+						$.map(result.list, function (item) {
+							template += itemTemplate.replace(/{{name}}/g, item.detail).replace(/{{code}}/g, item.code);
+						});
+						$('#u77-code-box .box .table .list').html(template);
+					} else {
+						alert('获取抽奖记录失败,请刷新重试.');
+					}
+				});
+			}
+		}, {
+			key: 'closeCodeBox',
+			value: function closeCodeBox() {
+				$('#u77-code-box').remove();
 			}
 		}]);
 
