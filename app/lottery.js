@@ -2,9 +2,10 @@ import {Router} from 'express';
 import moment from "moment";
 import crypto from 'crypto';
 import request from 'request-promise';
+import config from '../config.js';
 
 let router = Router();
-let path = "http://127.0.0.1:3000/";
+let path = config.local;
 
 router.get("/",(req,res) => {
 	let params = req.query;

@@ -27,11 +27,29 @@ body {
 	flex-direction:column;
 }
 
+#u77-loading {
+	position: fixed;
+    z-index: 10;
+    background: #fff;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    i{
+    	width: .64rem;
+	    height: .64rem;
+	    flex: 1;
+    }
+}
+
 #u77-header {
 	flex: 1;
 	display: flex;
 	background:#f5f6f5;
 	height: .3rem;
+	z-index: 3;
 
 	.nav,
 	.user {
@@ -61,7 +79,7 @@ body {
 
 			.item {
 				border-bottom: .01rem solid #c5c5c5;
-				padding: .05rem 0;
+				padding: .08rem 0;
 				width: 1rem;
 				text-align: center;
 				position: relative;
@@ -97,6 +115,11 @@ body {
 						padding: .05rem 0;
 						width: 1rem;
 						text-align: center;
+
+						.text {
+							color: #333;
+							text-decoration: none;
+						}
 					}
 
 					.sub-item:last-child {
@@ -176,6 +199,7 @@ body {
 	justify-content: center;
 	align-items: center;
 	top: 0;
+	z-index: 2;
 
 	.cover {
 		width: 100%;
@@ -302,4 +326,95 @@ body {
 			display: none;
 		}
 	}
+}
+
+#u77-code-box {
+	position: fixed;
+    z-index: 4;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+
+    .cover {
+    	width: 100%;
+    	height: 100%;
+    	background: #333;
+    	opacity: .6;
+    	position: absolute;
+    }
+
+    .box {
+    	left: 15%;
+    	width: 70%;
+    	top: 20%;
+    	background: #fff;
+    	z-index: 13;
+    	position: absolute;
+    	border-radius: .1rem;
+    	text-align: center;
+
+    	.title {
+    		font-weight: normal;
+    		color: #db6211;
+    	}
+
+    	.table {
+    		width: 80%;
+		    margin: 0 auto;
+		    margin-bottom: 0.3rem;
+    	}
+
+    	.desc {
+    		position: relative;
+		    overflow: hidden;
+
+    		.name {
+    			width: 30%;
+    			display: inline-block;
+    			float: left;
+    			padding: .08rem 0;
+    			background: #ffe3cd;
+    			border-top-left-radius: .05rem;
+    		}
+
+    		.code {
+    			display: inline-block;
+			    width: 70%;
+			    float: left;
+			    padding: .08rem 0;
+			    background: #ffd3b5;
+			    border-top-right-radius: .05rem;
+    		}
+    	}
+
+    	.list {
+    		height: 2.5rem;
+    		background: #fff1e5;
+    		overflow-y: scroll;
+    		font-size: .12rem;
+
+    		.loading{
+    			margin-top: 1rem;
+    		}
+
+    		.item {
+    			padding: .08rem 0;
+			    background: #fff1e5;
+			    overflow: hidden;
+
+			    .name {
+			    	float: left;
+			    	width: 30%;
+			    }
+
+			    .code {
+			    	float: left;
+			    	width: 70%;
+			    }
+    		}
+    	}
+    }
+
+
 }

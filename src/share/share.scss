@@ -1,0 +1,103 @@
+#u77-share {
+	.lottery {
+		width: 100%;
+		position: relative;
+		padding-top: .3rem;
+
+		.machine {
+			width: 70%;
+			margin-left: 10%;
+			position: relative;
+
+			.times {
+				position: absolute;
+				top: 9%;
+				color: #fff;
+				width: 100%;
+				text-align: center;
+			}
+
+			.entry {
+				width: 100%;
+				margin-top: -10%;
+				text-align: center;
+				z-index: 2;
+				position: absolute;
+				overflow: hidden;
+				height: 2rem;
+
+				.paper {
+					background: #ccc;
+					border: 1px solid #333;
+					border-radius: 5px;
+					width: 80%;
+					position: absolute;
+					left: 10%;
+					top: -100%;
+
+					.start-game {
+						padding: .05rem 0.2rem;
+					    display: inline-block;
+					    margin-bottom: .1rem;
+					    background: #e35a11;
+					    color: #fff;
+					    border-radius: .03rem;
+					    text-decoration: none;
+					}
+				}
+			}
+		}
+
+		.rocker {
+			position: absolute;
+			width: 20%;
+			right: 0;
+			top: 0;
+			height: 100%;
+			z-index: 2;
+
+			.text {
+				background: #e35a11;
+				color: #fff;
+				display: block;
+				width: .6rem;
+				padding: .05rem 0;
+				text-align: center;
+				margin: 0 auto;
+				border-radius: 4px;
+				font-size: .14rem;
+			}
+
+			.ball {
+				position: absolute;
+				bottom: 1.45rem;
+				left: .29rem;
+				width: .25rem;
+				height: .25rem;
+				background: #383260;
+				border-radius: 50%;
+				z-index: 2;
+			}
+
+			.v-pole {
+				background: #ffd95c;
+				position: absolute;
+				bottom: .78rem;
+				left: .37rem;
+				width: .1rem;
+				height: .8rem;
+				border-bottom-right-radius: 0.04rem;
+			}
+
+			.h-pole {
+				background: #ffd95c;
+				position: absolute;
+				bottom: .78rem;
+				left: .13rem;
+				width: .3rem;
+				height: .1rem;
+			}
+		}
+
+	}
+}

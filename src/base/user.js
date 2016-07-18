@@ -1,6 +1,9 @@
 import {BaseClass} from './baseClass.js';
 
+let path = window.path;
+
 export class User extends BaseClass{
+
 	constructor() {
 		super();
 		this.loginTemplate = `
@@ -35,11 +38,21 @@ export class User extends BaseClass{
 		this.isLogin().then(user => {
 			this.renderHeader();
 		});
+
+		this.unionId = $('#u77-unionid').val();
+	}
+
+	showMenu() {
+		$('#u77-header .nav .menu').show();
+	}
+
+	hideMenu() {
+		$('#u77-header .nav .menu').hide();
 	}
 
 	renderHeader() {
 		let navTemplate = `
-		<div class="nav">
+		<div class="nav" onclick="base.user.showMenu()">
 			<span class="icon"><i class="fa fa-plus-square-o"></i></span>
 			<div class="menu">
 				<i class="angle fa fa-caret-up"></i>
@@ -51,10 +64,10 @@ export class User extends BaseClass{
 							<i class="sub-angle fa fa-caret-right"></i>
 							<div class="sub-wrap">
 								<div class="sub-item">
-									<span class="text">萌神赵子龙</span>
+									<a href="http://www.u77.com/gamegate/egret_login/90492" class="text">萌神赵子龙</a>
 								</div>
 								<div class="sub-item">
-									<span class="text">艾德尔冒险</span>
+									<a href="http://www.u77.com/gamegate/egret_login/90064" class="text">艾德尔冒险</a>
 								</div>
 							</div>
 						</div>
@@ -66,13 +79,17 @@ export class User extends BaseClass{
 							<i class="sub-angle fa fa-caret-right"></i>
 							<div class="sub-wrap">
 								<div class="sub-item">
-									<span class="text">萌神签到礼包</span>
+									<a href="${path}server-weixin/lead/seven-mark" class="text">萌神签到礼包</a>
 								</div>
 								<div class="sub-item">
-									<span class="text">萌神分享礼包</span>
+									<a href="${path}server-weixin/lead/share" class="text">萌神分享礼包</a>
 								</div>
 							</div>
 						</div>
+					</div>
+					<div class="item code-box" onclick="base.user.openCodeBox()">
+						<i class="fa fa-gift"></i>
+						<span class="text">礼包盒</span>
 					</div>
 				</div>
 			</div>
@@ -192,5 +209,49 @@ export class User extends BaseClass{
 				$('#u77-login .tab[data-id=1]').addClass('active');
 				break;
 		}
+	}
+
+	openCodeBox() {
+		let codeBoxTemplate = `
+		<div id="u77-code-box">
+			<div class="cover" onclick="base.user.closeCodeBox()"></div>
+			<div class="box">
+				<h2 class="title">获得的激活码</h2>
+				<div class="table">
+					<div class="desc">
+						<span class="name">礼包名称</span>
+						<span class="code">激活码</span>
+					</div>
+					<div class="list">
+						<div class="loading"><i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		`;
+
+		let itemTemplate = `
+		<div class="item">
+			<span class="name">{{name}}</span>
+			<span class="code">{{code}}</span>
+		</div>
+		`;
+
+		$('body').append(codeBoxTemplate);
+		$.get(path+'gift/find',{unionId:this.unionId},result => {
+			if(result.status == 100){
+				let template = '';
+				$.map(result.list,item => {
+					template += itemTemplate.replace(/{{name}}/g,item.detail).replace(/{{code}}/g,item.code);
+				});
+				$('#u77-code-box .box .table .list').html(template);
+			}else {
+				alert('获取抽奖记录失败,请刷新重试.');
+			}
+		})
+	}
+
+	closeCodeBox() {
+		$('#u77-code-box').remove();
 	}
 }
