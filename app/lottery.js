@@ -46,22 +46,22 @@ async function lotteryInit(user){
 	let time = moment().unix().toString();
 
 	if(lottery){
-		let lastTime = lottery.get("time");
-		let num = lottery.get("num");
-		if(time && moment.unix(time).format("YYYY-MM-DD") == moment.unix(lastTime).format("YYYY-MM-DD")){
+		// let lastTime = lottery.get("time");
+		// let num = lottery.get("num");
+		// if(time && moment.unix(time).format("YYYY-MM-DD") == moment.unix(lastTime).format("YYYY-MM-DD")){
 			return lottery;
-		}else{
-			lottery.set("num",num+5);
-			lottery.set("time",time);
-			return await lottery.save();
-		}
+		// }else{
+		// 	lottery.set("num",num+5);
+			// lottery.set("time",time);
+		// 	return await lottery.save();
+		// }
 	}else{
 		let Lottery = global.Lottery;
 
 		let newLottery = new Lottery();
 		newLottery.set("user",user);
-		newLottery.set("num",5);
-		newLottery.set("time",time);
+		newLottery.set("num",1);
+		// newLottery.set("time",time);
 
 		return await newLottery.save();
 	}
@@ -132,21 +132,5 @@ function getRand(){
 
 	return name;
 }
-
-// async function addChance(user) {
-// 	let query = new AV.Query('Lottery');
-// 	query.equalTo('user', user);
-// 	let lottery = await query.first();
-// 	if(lottery){
-// 		let num = lottery.get("num");
-// 		lottery.set("num",num+);
-// 		return await lottery.save();
-// 	}else{
-// 		return {
-// 			status:107,
-// 			msg:"用户不存在"
-// 		}
-// 	}
-// }
 
 export default router;

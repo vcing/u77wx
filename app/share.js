@@ -114,12 +114,12 @@ async function share(user,from,time){
 	let query = new AV.Query('Share');
 	query.equalTo('user', user);
 	let result = await query.first();
-	// let chanceFlag = true;
+	let chanceFlag = true;
 	if(result){
-		// let lastTime = result.get(from);
-		// if(moment.unix(time).format("YYYY-MM-DD") == moment.unix(lastTime).format("YYYY-MM-DD")){
-		// 	chanceFlag = false;
-		// }
+		let lastTime = result.get(from);
+		if(moment.unix(time).format("YYYY-MM-DD") == moment.unix(lastTime).format("YYYY-MM-DD")){
+			chanceFlag = false;
+		}
 	}else{
 		let Share = global.Share;
 		result = new Share();
@@ -128,58 +128,58 @@ async function share(user,from,time){
 
 	result.set(from,time);
 	let share = await result.save();
-	// let chance = "";
-	// if(chanceFlag){
-	// 	try{
-	// 		chance = await addChance(user);
-	// 		return {
-	// 			status:100,
-	// 			msg:"ok"
-	// 		};
-	// 	}catch(e){
-	// 		return {
-	// 			status:106,
-	// 			msg:"增加抽奖次数失败"
-	// 		}
-	// 	}
-	// }else{
+	let chance = "";
+	if(chanceFlag){
+		try{
+			chance = await addChance(user);
+			return {
+				status:100,
+				msg:"ok"
+			};
+		}catch(e){
+			return {
+				status:106,
+				msg:"增加抽奖次数失败"
+			}
+		}
+	}else{
 		return {
 			status:110,
 			msg:"ok"
 		};
-	// }
+	}
 
 	
 }
 
 async function joinShare(shareUser,joinUser,time){
-	// let query = new AV.Query('ShareLog');
-	// query.equalTo('shareUser', shareUser);
-	// query.equalTo('joinUser', joinUser);
-	// query.descending('createdAt');
-	// let log = await query.first();
-	// let chanceFlag = true;
-	// let chance = "";
+	let query = new AV.Query('ShareLog');
+	query.equalTo('shareUser', shareUser);
+	query.equalTo('joinUser', joinUser);
+	query.descending('createdAt');
+	let log = await query.first();
+	let chanceFlag = true;
+	let chance = "";
 	let shareLog = await addLog(shareUser,joinUser,time);
-	// if(!log){
-	// 	try{
-	// 		chance = await addChance(shareUser);
-	// 		return {
-	// 			status:100,
-	// 			msg:"ok"
-	// 		};
-	// 	}catch(e){
-	// 		return {
-	// 			status:106,
-	// 			msg:"增加抽奖次数失败"
-	// 		}
-	// 	}
-	// }else{
+	if(!log){
+		try{
+			chance = await addChance(shareUser);
+			return {
+				status:100,
+				msg:"ok"
+			};
+		}catch(e){
+			return {
+				status:106,
+				msg:"增加抽奖次数失败"
+			}
+		}
+	}else{
 		return {
 			status:110,
 			msg:"ok"
 		};
-	// }
+	}
 }
 
 async function addLog(shareUser,joinUser,time){
@@ -193,20 +193,20 @@ async function addLog(shareUser,joinUser,time){
 	return log.save();
 }
 
-// async function addChance(user) {
-// 	let query = new AV.Query('Lottery');
-// 	query.equalTo('user', user);
-// 	let lottery = await query.first();
-// 	if(lottery){
-// 		let num = lottery.get("num");
-// 		lottery.set("num",num+1);
-// 		return await lottery.save();
-// 	}else{
-// 		return {
-// 			status:107,
-// 			msg:"用户不存在"
-// 		}
-// 	}
-// }
+async function addChance(user) {
+	let query = new AV.Query('Lottery');
+	query.equalTo('user', user);
+	let lottery = await query.first();
+	if(lottery){
+		let num = lottery.get("num");
+		lottery.set("num",num+1);
+		return await lottery.save();
+	}else{
+		return {
+			status:107,
+			msg:"用户不存在"
+		}
+	}
+}
 
 export default router;
